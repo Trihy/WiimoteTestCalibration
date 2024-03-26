@@ -1,0 +1,39 @@
+﻿<Window x:Class="WpfApp7.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp7"
+        mc:Ignorable="d"
+        Title="MainWindow" d:Width="1366" d:Height="768" SizeToContent="Manual" WindowState="Maximized" WindowStartupLocation="CenterScreen" WindowStyle="None" Closed="Window_Closed" KeyUp="Window_KeyUp">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Thickness x:Key="SpaceMargin" Top="8" Bottom="0" Left="0" Right="0" />
+    </Window.Resources>
+    <Canvas x:Name="calibCanvas">
+        <Ellipse x:Name="lightgunPointEllipse" Width="10" Height="10" Canvas.Top="{Binding LightGunPointY}" Canvas.Left="{Binding LightGunPointX}"
+                 Visibility="{Binding LightGunPointVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Fill="Green" />
+        <Image x:Name="topLeftGunImg" Source="gun.png" Width="75" Height="75" Canvas.Top="{Binding GunImageTop}" Canvas.Left="{Binding GunImageLeft}" Visibility="{Binding DisplayTopLeftGunImg, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Image x:Name="centerGunImg" Source="gun.png" Width="75" Height="75" Canvas.Top="{Binding GunCenterTop}" Canvas.Left="{Binding GunCenterLeft}" Visibility="{Binding DisplayCenterGunImg, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <TextBlock Text="{Binding MidPointString}" Canvas.Bottom="0" Canvas.Left="20" MinWidth="100" />
+        <TextBox Text="{Binding CalibPointString, Mode=OneWay}" IsReadOnly="True" MinWidth="300" MinHeight="100" Canvas.Bottom="0" Canvas.Right="0" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <StackPanel Orientation="Vertical" Canvas.Top="0" Canvas.Left="0" Width="{Binding ActualWidth, ElementName=calibCanvas, Mode=OneWay}">
+            <TextBlock Text="{Binding CurrentStepHelpText, Mode=OneWay, FallbackValue='Fallback Text'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" />
+        </StackPanel>
+
+        <UniformGrid Columns="2" Canvas.Top="300" Canvas.Left="0" MinWidth="200"
+                     Visibility="{Binding DisplayDoneVis, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Label Content="Top Left X:" />
+            <TextBox Text="{Binding TopLeftXCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+
+            <Label Content="Top Left Y:" Margin="{StaticResource SpaceMargin}" />
+            <TextBox Text="{Binding TopLeftYCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+
+            <Label Content="Center X:" Margin="{StaticResource SpaceMargin}" />
+            <TextBox Text="{Binding CenterXCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+
+            <Label Content="Center Y:" Margin="{StaticResource SpaceMargin}" />
+            <TextBox Text="{Binding CenterYCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+        </UniformGrid>
+    </Canvas>
+</Window>
