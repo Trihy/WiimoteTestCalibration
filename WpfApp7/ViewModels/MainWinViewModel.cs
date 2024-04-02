@@ -135,7 +135,7 @@ namespace WpfApp7.ViewModels
         private double topLeftXCoorAdj;
         public string TopLeftXCoorAdj
         {
-            get => topLeftXCoorAdj.ToString("F2");
+            get => topLeftXCoorAdj.ToString("F3");
             set
             {
                 double temp = Convert.ToDouble(value);
@@ -149,7 +149,7 @@ namespace WpfApp7.ViewModels
         private double topLeftYCoorAdj;
         public string TopLeftYCoorAdj
         {
-            get => topLeftYCoorAdj.ToString("F2");
+            get => topLeftYCoorAdj.ToString("F3");
             set
             {
                 double temp = Convert.ToDouble(value);
@@ -163,7 +163,7 @@ namespace WpfApp7.ViewModels
         private double centerXCoorAdj;
         public string CenterXCoorAdj
         {
-            get => centerXCoorAdj.ToString("F2");
+            get => centerXCoorAdj.ToString("F3");
             set
             {
                 double temp = Convert.ToDouble(value);
@@ -177,7 +177,7 @@ namespace WpfApp7.ViewModels
         private double centerYCoorAdj;
         public string CenterYCoorAdj
         {
-            get => centerYCoorAdj.ToString("F2");
+            get => centerYCoorAdj.ToString("F3");
             set
             {
                 double temp = Convert.ToDouble(value);
