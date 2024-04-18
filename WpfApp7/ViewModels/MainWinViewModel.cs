@@ -679,11 +679,11 @@ namespace WpfApp7.ViewModels
 
     public class WiiGunMappingConfig
     {
-        private WiimoteMapping remoteMappings = new WiimoteMapping();
+        private WiimoteMapping remoteMapping = new WiimoteMapping();
         public WiimoteMapping RemoteMapping
         {
-            get => remoteMappings;
-            set => remoteMappings = value;
+            get => remoteMapping;
+            set => remoteMapping = value;
         }
     }
 
