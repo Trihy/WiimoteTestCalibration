@@ -565,20 +565,20 @@ namespace WpfApp7.ViewModels
 
         private void EstablishDoneFromMapping()
         {
-            topLeftXCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.TopLeftX;
-            topLeftCalibPoint.X = (float)gunMappingConfig.RemoteMaping.MappingPoints.TopLeftX;
+            topLeftXCoorAdj = gunMappingConfig.RemoteMapping.MappingPoints.TopLeftX;
+            topLeftCalibPoint.X = (float)gunMappingConfig.RemoteMapping.MappingPoints.TopLeftX;
             //builder.AppendLine($"{topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
             //builder.AppendLine($"{centerCalibPoint.X} {centerCalibPoint.Y}");
 
-            topLeftYCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.TopLeftY;
-            topLeftCalibPoint.Y = (float)gunMappingConfig.RemoteMaping.MappingPoints.TopLeftY;
+            topLeftYCoorAdj = gunMappingConfig.RemoteMapping.MappingPoints.TopLeftY;
+            topLeftCalibPoint.Y = (float)gunMappingConfig.RemoteMapping.MappingPoints.TopLeftY;
 
-            centerXCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.CenterX;
-            centerCalibPoint.X = (float)gunMappingConfig.RemoteMaping.MappingPoints.CenterX;
+            centerXCoorAdj = gunMappingConfig.RemoteMapping.MappingPoints.CenterX;
+            centerCalibPoint.X = (float)gunMappingConfig.RemoteMapping.MappingPoints.CenterX;
 
 
-            centerYCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.CenterY;
-            centerCalibPoint.Y = (float)gunMappingConfig.RemoteMaping.MappingPoints.CenterY;
+            centerYCoorAdj = gunMappingConfig.RemoteMapping.MappingPoints.CenterY;
+            centerCalibPoint.Y = (float)gunMappingConfig.RemoteMapping.MappingPoints.CenterY;
         }
 
         private void SetupDone()
@@ -607,7 +607,7 @@ namespace WpfApp7.ViewModels
             //gunMappingConfig.RemoteMaping.Find((t) => t.Serial)
             if (gunMappingConfig != null)
             {
-                gunMappingConfig.RemoteMaping.MappingPoints = new MappingPoints()
+                gunMappingConfig.RemoteMapping.MappingPoints = new MappingPoints()
                 {
                     TopLeftX = topLeftXCoorAdj,
                     TopLeftY = topLeftYCoorAdj,
@@ -680,7 +680,7 @@ namespace WpfApp7.ViewModels
     public class WiiGunMappingConfig
     {
         private WiimoteMapping remoteMappings = new WiimoteMapping();
-        public WiimoteMapping RemoteMaping
+        public WiimoteMapping RemoteMapping
         {
             get => remoteMappings;
             set => remoteMappings = value;
