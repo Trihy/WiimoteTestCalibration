@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WiimoteLib;
 using WpfScreenHelper;
@@ -129,6 +131,19 @@ namespace WpfApp7.ViewModels
         }
         public event EventHandler CurrentStepHelpTextChanged;
 
+        private string warningHelpText = string.Empty;
+        public string WarningHelpText
+        {
+            get => warningHelpText;
+            private set
+            {
+                if (warningHelpText == value) return;
+                warningHelpText = value;
+                WarningHelpTextChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        public event EventHandler WarningHelpTextChanged;
+
         private double offsetTopLeftX;
         private double offsetTopLeftY;
 
@@ -201,8 +216,11 @@ namespace WpfApp7.ViewModels
         }
         public event EventHandler DisplayDoneVisChanged;
 
+        private WiiGunMappingConfig gunMappingConfig;
+
         private const int GUN_IMG_WIDTH = 72;
         private const int GUN_IMG_HEIGHT = 72;
+        private const int IRSENSORS_LEN = 4;
 
         public MainWinViewModel()
         {
@@ -210,10 +228,89 @@ namespace WpfApp7.ViewModels
             SetCanvasDimensions((int)WpfScreenHelper.SystemInformation.VirtualScreen.Width,
                 (int)WpfScreenHelper.SystemInformation.VirtualScreen.Height);
 
+            gunMappingConfig = new WiiGunMappingConfig();
+            DetectPreviousMapping();
+
             TopLeftXCoorAdjChanged += MainWinViewModel_TopLeftXCoorAdjChanged;
             TopLeftYCoorAdjChanged += MainWinViewModel_TopLeftYCoorAdjChanged;
             CenterXCoorAdjChanged += MainWinViewModel_CenterXCoorAdjChanged;
             CenterYCoorAdjChanged += MainWinViewModel_CenterYCoorAdjChanged;
+        }
+
+        private void DetectPreviousMapping()
+        {
+            string testPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "WiimoteGunTester", "mappings.json");
+
+            if (!Directory.Exists(Path.GetDirectoryName(testPath)))
+            {
+                string dirPath = Path.GetDirectoryName(testPath);
+                Directory.CreateDirectory(dirPath);
+            }
+
+            gunMappingConfig = null;
+            if (File.Exists(testPath))
+            {
+                string json = string.Empty;
+                using (StreamReader sr = new StreamReader(testPath))
+                {
+                    json = sr.ReadToEnd();
+                }
+
+                if (!string.IsNullOrEmpty(json))
+                {
+                    bool fileRead = false;
+
+                    try
+                    {
+                        WiiGunMappingConfig config = JsonSerializer.Deserialize<WiiGunMappingConfig>(json);
+                        gunMappingConfig = config;
+                        fileRead = true;
+                    }
+                    catch (JsonException)
+                    {
+                        // File parsing failed. Make blank instance of config
+                        gunMappingConfig = new WiiGunMappingConfig();
+                    }
+
+                    if (fileRead)
+                    {
+                        currentCalibStep = CalibrationStep.Done;
+                        EstablishDoneFromMapping();
+                        SetupDone();
+                    }
+                }
+            }
+            else
+            {
+                gunMappingConfig = new WiiGunMappingConfig();
+            }
+        }
+
+        public void SaveMappingConfig()
+        {
+            if (currentCalibStep != CalibrationStep.Done || gunMappingConfig == null)
+            {
+                return;
+            }
+
+            string testPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "WiimoteGunTester", "mappings.json");
+
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+            };
+
+            string json = JsonSerializer.Serialize(gunMappingConfig, options);
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(testPath, false))
+                {
+                    sw.Write(json);
+                }
+            }
+            catch (IOException) { }
         }
 
         private void MainWinViewModel_CenterYCoorAdjChanged(object sender, EventArgs e)
@@ -313,7 +410,29 @@ namespace WpfApp7.ViewModels
             {
                 if (previousBState && !currentBState)
                 {
-                    NextCalibrationStep();
+                    bool found = false;
+                    for (int i = 0; i < IRSENSORS_LEN && !found; i++)
+                    {
+                        if (ws.IRState.IRSensors[i].Found)
+                        {
+                            for (int j = i + 1; j < IRSENSORS_LEN && !found; j++)
+                            {
+                                if (ws.IRState.IRSensors[j].Found)
+                                {
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (found)
+                    {
+                        NextCalibrationStep();
+                    }
+                    else
+                    {
+                        WarningHelpText = "Failed to find a midpoint. Please try again";
+                    }
                 }
             }
             else if (currentCalibStep == CalibrationStep.Done)
@@ -332,6 +451,14 @@ namespace WpfApp7.ViewModels
 
             StateDataChanged?.Invoke(this, EventArgs.Empty);
             previousBState = currentBState;
+        }
+
+        public void CheckStartProcess()
+        {
+            if (currentCalibStep != CalibrationStep.Done)
+            {
+                StartCalibration();
+            }
         }
 
         public void StartCalibration()
@@ -403,6 +530,7 @@ namespace WpfApp7.ViewModels
             centerCalibPoint = new PointF();
             CalibPointString = string.Empty;
             CurrentStepHelpText = string.Empty;
+            WarningHelpText = string.Empty;
             DisplayDoneVis = false;
 
             DisplayTopLeftGunImgChanged?.Invoke(this, EventArgs.Empty);
@@ -417,6 +545,7 @@ namespace WpfApp7.ViewModels
             topLeftCalibPoint = new PointF();
             centerCalibPoint = new PointF();
             CurrentStepHelpText = "Aim for center point and press B";
+            WarningHelpText = string.Empty;
             DisplayDoneVis = false;
 
             DisplayTopLeftGunImgChanged?.Invoke(this, EventArgs.Empty);
@@ -428,9 +557,28 @@ namespace WpfApp7.ViewModels
             displayTopLeftGunImg = true;
             displayCenterGunImg = false;
             CurrentStepHelpText = "Aim for top left point and press B";
+            WarningHelpText = string.Empty;
 
             DisplayTopLeftGunImgChanged?.Invoke(this, EventArgs.Empty);
             DisplayCenterGunImgChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void EstablishDoneFromMapping()
+        {
+            topLeftXCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.TopLeftX;
+            topLeftCalibPoint.X = (float)gunMappingConfig.RemoteMaping.MappingPoints.TopLeftX;
+            //builder.AppendLine($"{topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
+            //builder.AppendLine($"{centerCalibPoint.X} {centerCalibPoint.Y}");
+
+            topLeftYCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.TopLeftY;
+            topLeftCalibPoint.Y = (float)gunMappingConfig.RemoteMaping.MappingPoints.TopLeftY;
+
+            centerXCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.CenterX;
+            centerCalibPoint.X = (float)gunMappingConfig.RemoteMaping.MappingPoints.CenterX;
+
+
+            centerYCoorAdj = gunMappingConfig.RemoteMaping.MappingPoints.CenterY;
+            centerCalibPoint.Y = (float)gunMappingConfig.RemoteMaping.MappingPoints.CenterY;
         }
 
         private void SetupDone()
@@ -439,6 +587,7 @@ namespace WpfApp7.ViewModels
             displayCenterGunImg = true;
             lightGunPointVisible = true;
             CurrentStepHelpText = string.Empty;
+            WarningHelpText = string.Empty;
             DisplayDoneVis = true;
 
             DisplayTopLeftGunImgChanged?.Invoke(this, EventArgs.Empty);
@@ -450,6 +599,22 @@ namespace WpfApp7.ViewModels
             CenterYCoorAdjChanged?.Invoke(this, EventArgs.Empty);
 
             GenerateCalibPointOutput();
+            SaveCalibPointConfigInfo();
+        }
+
+        private void SaveCalibPointConfigInfo()
+        {
+            //gunMappingConfig.RemoteMaping.Find((t) => t.Serial)
+            if (gunMappingConfig != null)
+            {
+                gunMappingConfig.RemoteMaping.MappingPoints = new MappingPoints()
+                {
+                    TopLeftX = topLeftXCoorAdj,
+                    TopLeftY = topLeftYCoorAdj,
+                    CenterX = centerXCoorAdj,
+                    CenterY = centerYCoorAdj,
+                };
+            }
         }
 
         private void GenerateCalibPointOutput()
@@ -469,6 +634,8 @@ namespace WpfApp7.ViewModels
 
         public void TearDown()
         {
+            SaveMappingConfig();
+
             foreach(Wiimote wm in mWC)
             {
                 wm.Disconnect();
@@ -507,6 +674,64 @@ namespace WpfApp7.ViewModels
         {
             get => lightGunY;
             set => lightGunY = value;
+        }
+    }
+
+    public class WiiGunMappingConfig
+    {
+        private WiimoteMapping remoteMappings = new WiimoteMapping();
+        public WiimoteMapping RemoteMaping
+        {
+            get => remoteMappings;
+            set => remoteMappings = value;
+        }
+    }
+
+    public class WiimoteMapping
+    {
+        //private string serial;
+        //public string Serial
+        //{
+        //    get => serial;
+        //    set => serial = value;
+        //}
+
+        private MappingPoints mappingPoints = new MappingPoints();
+        public MappingPoints MappingPoints
+        {
+            get => mappingPoints;
+            set => mappingPoints = value;
+        }
+    }
+
+    public class MappingPoints
+    {
+        private double topLeftX;
+        public double TopLeftX
+        {
+            get => topLeftX;
+            set => topLeftX = value;
+        }
+
+        private double topLeftY;
+        public double TopLeftY
+        {
+            get => topLeftY;
+            set => topLeftY = value;
+        }
+
+        private double centerX;
+        public double CenterX
+        {
+            get => centerX;
+            set => centerX = value;
+        }
+
+        private double centerY;
+        public double CenterY
+        {
+            get => centerY;
+            set => centerY = value;
         }
     }
 }

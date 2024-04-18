@@ -54,7 +54,7 @@ namespace WpfApp7
             Height = winWM.CanvasHeight;
 
             //winWM.SetCanvasDimensions((int)Width, (int)Height);
-            winWM.StartCalibration();
+            winWM.CheckStartProcess();
 
             DataContext = winWM;
         }

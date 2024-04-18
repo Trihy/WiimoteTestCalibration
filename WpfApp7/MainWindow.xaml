@@ -19,6 +19,7 @@
         <TextBox Text="{Binding CalibPointString, Mode=OneWay}" IsReadOnly="True" MinWidth="300" MinHeight="100" Canvas.Bottom="0" Canvas.Right="0" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <StackPanel Orientation="Vertical" Canvas.Top="0" Canvas.Left="0" Width="{Binding ActualWidth, ElementName=calibCanvas, Mode=OneWay}">
             <TextBlock Text="{Binding CurrentStepHelpText, Mode=OneWay, FallbackValue='Fallback Text'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" />
+            <TextBlock Text="{Binding WarningHelpText, Mode=OneWay, FallbackValue='Error'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" Foreground="Red" />
         </StackPanel>
 
         <UniformGrid Columns="2" Canvas.Top="300" Canvas.Left="0" MinWidth="200"
