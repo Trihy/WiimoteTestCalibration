@@ -4,8 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp7"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        ui:TitleBar.ExtendViewIntoTitleBar="True"
+        ui:TitleBar.IsIconVisible="False"
         mc:Ignorable="d"
-        Title="MainWindow" d:Width="1366" d:Height="768" SizeToContent="Manual" WindowState="Maximized" WindowStartupLocation="CenterScreen" WindowStyle="None" Closed="Window_Closed" KeyUp="Window_KeyUp">
+        Title="MainWindow" d:Width="1366" d:Height="768" SizeToContent="Manual"
+        WindowState="Maximized" WindowStartupLocation="CenterScreen"
+        WindowStyle="None" ResizeMode="NoResize"
+        Closed="Window_Closed" KeyUp="Window_KeyUp">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Thickness x:Key="SpaceMargin" Top="8" Bottom="0" Left="0" Right="0" />
@@ -25,16 +32,20 @@
         <UniformGrid Columns="2" Canvas.Top="300" Canvas.Left="0" MinWidth="200"
                      Visibility="{Binding DisplayDoneVis, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Label Content="Top Left X:" />
-            <TextBox Text="{Binding TopLeftXCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+            <!--<TextBox Text="{Binding TopLeftXCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />-->
+            <ui:NumberBox Value="{Binding TopLeftXCoorAdj, UpdateSourceTrigger=LostFocus, StringFormat='F3'}" Width="100" Height="60" Minimum="0.0" Maximum="1.0" SmallChange="0.005" LargeChange="0.01" SpinButtonPlacementMode="Compact" />
 
             <Label Content="Top Left Y:" Margin="{StaticResource SpaceMargin}" />
-            <TextBox Text="{Binding TopLeftYCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+            <!--<TextBox Text="{Binding TopLeftYCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />-->
+            <ui:NumberBox Value="{Binding TopLeftYCoorAdj, UpdateSourceTrigger=LostFocus, StringFormat='F3'}" Width="100" Height="60" Minimum="0.0" Maximum="1.0" SmallChange="0.005" LargeChange="0.01" SpinButtonPlacementMode="Compact" />
 
             <Label Content="Center X:" Margin="{StaticResource SpaceMargin}" />
-            <TextBox Text="{Binding CenterXCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+            <!--<TextBox Text="{Binding CenterXCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />-->
+            <ui:NumberBox Value="{Binding CenterXCoorAdj, UpdateSourceTrigger=LostFocus, StringFormat='F3'}" Width="100" Height="60" Minimum="0.0" Maximum="1.0" SmallChange="0.005" LargeChange="0.01" SpinButtonPlacementMode="Compact" />
 
             <Label Content="Center Y:" Margin="{StaticResource SpaceMargin}" />
-            <TextBox Text="{Binding CenterYCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />
+            <!--<TextBox Text="{Binding CenterYCoorAdj, UpdateSourceTrigger=LostFocus}" Width="50" Height="30" />-->
+            <ui:NumberBox Value="{Binding CenterYCoorAdj, UpdateSourceTrigger=LostFocus, StringFormat='F3'}" Width="100" Height="60" Minimum="0.0" Maximum="1.0" SmallChange="0.005" LargeChange="0.01" SpinButtonPlacementMode="Compact" />
         </UniformGrid>
     </Canvas>
 </Window>

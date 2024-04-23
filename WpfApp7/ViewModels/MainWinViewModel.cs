@@ -148,56 +148,57 @@ namespace WpfApp7.ViewModels
         private double offsetTopLeftY;
 
         private double topLeftXCoorAdj;
-        public string TopLeftXCoorAdj
+        public double TopLeftXCoorAdj
         {
-            get => topLeftXCoorAdj.ToString("F3");
+            get => topLeftXCoorAdj;
             set
             {
-                double temp = Convert.ToDouble(value);
-                if (topLeftXCoorAdj == temp) return;
-                topLeftXCoorAdj = temp;
+                //double temp = Convert.ToDouble(value);
+                //if (topLeftXCoorAdj == temp) return;
+                if (topLeftXCoorAdj == value) return;
+                topLeftXCoorAdj = value;
                 TopLeftXCoorAdjChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler TopLeftXCoorAdjChanged;
 
         private double topLeftYCoorAdj;
-        public string TopLeftYCoorAdj
+        public double TopLeftYCoorAdj
         {
-            get => topLeftYCoorAdj.ToString("F3");
+            get => topLeftYCoorAdj;
             set
             {
-                double temp = Convert.ToDouble(value);
-                if (topLeftYCoorAdj == temp) return;
-                topLeftYCoorAdj = temp;
+                //double temp = Convert.ToDouble(value);
+                //if (topLeftYCoorAdj == temp) return;
+                //topLeftYCoorAdj = temp;
+                if (topLeftYCoorAdj == value) return;
+                topLeftYCoorAdj = value;
                 TopLeftYCoorAdjChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler TopLeftYCoorAdjChanged;
 
         private double centerXCoorAdj;
-        public string CenterXCoorAdj
+        public double CenterXCoorAdj
         {
-            get => centerXCoorAdj.ToString("F3");
+            get => centerXCoorAdj;
             set
             {
-                double temp = Convert.ToDouble(value);
-                if (centerXCoorAdj == temp) return;
-                centerXCoorAdj = temp;
+                if (centerXCoorAdj == value) return;
+                centerXCoorAdj = value;
                 CenterXCoorAdjChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public event EventHandler CenterXCoorAdjChanged;
 
         private double centerYCoorAdj;
-        public string CenterYCoorAdj
+        public double CenterYCoorAdj
         {
-            get => centerYCoorAdj.ToString("F3");
+            get => centerYCoorAdj;
             set
             {
-                double temp = Convert.ToDouble(value);
-                if (centerYCoorAdj == temp) return;
-                centerYCoorAdj = temp;
+                if (centerYCoorAdj == value) return;
+                centerYCoorAdj = value;
                 CenterYCoorAdjChanged?.Invoke(this, EventArgs.Empty);
             }
         }
