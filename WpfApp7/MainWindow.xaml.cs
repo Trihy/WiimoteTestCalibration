@@ -55,14 +55,39 @@ namespace WpfApp7
 
             //winWM.SetCanvasDimensions((int)Width, (int)Height);
             winWM.CheckStartProcess();
+            SetupEvents();
 
             DataContext = winWM;
+        }
+
+        private void SetupEvents()
+        {
+            //winWM.WiimoteStatePreprocess += WinWM_WiimoteStatePreprocess;
+            winWM.StateDataChanged += WinWM_StateDataChanged;
+        }
+
+        private void WinWM_StateDataChanged(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                // Tell UI to update bindings
+                //DataContext = null;
+                //DataContext = winWM;
+                // Tell UI to update lightgun point position
+                winWM.UpdateLightGunPoint();
+            });
+        }
+
+        private void WinWM_WiimoteStatePreprocess(object sender, EventArgs e)
+        {
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
             DataContext = null;
+
             winWM.TearDown();
+            winWM = null;
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)

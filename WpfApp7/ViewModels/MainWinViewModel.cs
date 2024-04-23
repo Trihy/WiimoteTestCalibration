@@ -218,6 +218,8 @@ namespace WpfApp7.ViewModels
 
         private WiiGunMappingConfig gunMappingConfig;
 
+        public event EventHandler WiimoteStatePreprocess;
+
         private const int GUN_IMG_WIDTH = 72;
         private const int GUN_IMG_HEIGHT = 72;
         private const int IRSENSORS_LEN = 4;
@@ -393,6 +395,8 @@ namespace WpfApp7.ViewModels
         {
             WiimoteState ws = e.WiimoteState;
 
+            WiimoteStatePreprocess?.Invoke(this, EventArgs.Empty);
+
             stateData.MidPointX = 1.0 - ws.IRState.Midpoint.X;
             stateData.MidPointY = ws.IRState.Midpoint.Y;
 
@@ -444,13 +448,19 @@ namespace WpfApp7.ViewModels
                 //lightGunPointX = (int)ws.IRState.Midpoint.X;
                 //lightGunPointY = (int)ws.IRState.Midpoint.Y;
 
-                LightGunPointXChanged?.Invoke(this, EventArgs.Empty);
-                LightGunPointYChanged?.Invoke(this, EventArgs.Empty);
+                //LightGunPointXChanged?.Invoke(this, EventArgs.Empty);
+                //LightGunPointYChanged?.Invoke(this, EventArgs.Empty);
                 
             }
 
             StateDataChanged?.Invoke(this, EventArgs.Empty);
             previousBState = currentBState;
+        }
+
+        public void UpdateLightGunPoint()
+        {
+            LightGunPointXChanged?.Invoke(this, EventArgs.Empty);
+            LightGunPointYChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public void CheckStartProcess()
