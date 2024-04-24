@@ -10,6 +10,11 @@
                 <ui:ThemeResources />
                 <ui:XamlControlsResources />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Keep this here for now. Can be used to hide Close button in custom Window titlebar -->
+            <Style x:Key="HideTitleButtonStyle" TargetType="ui:TitleBarButton">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
