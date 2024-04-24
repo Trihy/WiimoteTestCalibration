@@ -13,7 +13,11 @@
 
             <!-- Keep this here for now. Can be used to hide Close button in custom Window titlebar -->
             <Style x:Key="HideTitleButtonStyle" TargetType="ui:TitleBarButton">
-                <Setter Property="Visibility" Value="Collapsed" />
+                <Style.Triggers>
+                    <Trigger Property="Name" Value="CloseButton">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Application.Resources>
