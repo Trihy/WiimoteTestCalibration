@@ -321,6 +321,7 @@ namespace WpfApp7.ViewModels
             if (currentCalibStep == CalibrationStep.Done)
             {
                 centerCalibPoint.Y = (float)centerYCoorAdj;
+                gunMappingConfig.RemoteMapping.MappingPoints.CenterY = centerYCoorAdj;
                 GenerateCalibPointOutput();
             }
         }
@@ -330,6 +331,7 @@ namespace WpfApp7.ViewModels
             if (currentCalibStep == CalibrationStep.Done)
             {
                 centerCalibPoint.X = (float)centerXCoorAdj;
+                gunMappingConfig.RemoteMapping.MappingPoints.CenterX = centerXCoorAdj;
                 GenerateCalibPointOutput();
             }
         }
@@ -339,6 +341,7 @@ namespace WpfApp7.ViewModels
             if (currentCalibStep == CalibrationStep.Done)
             {
                 topLeftCalibPoint.Y = (float)topLeftYCoorAdj;
+                gunMappingConfig.RemoteMapping.MappingPoints.TopLeftY = topLeftYCoorAdj;
                 GenerateCalibPointOutput();
             }
         }
@@ -348,6 +351,7 @@ namespace WpfApp7.ViewModels
             if (currentCalibStep == CalibrationStep.Done)
             {
                 topLeftCalibPoint.X = (float)topLeftXCoorAdj;
+                gunMappingConfig.RemoteMapping.MappingPoints.TopLeftX = topLeftXCoorAdj;
                 GenerateCalibPointOutput();
             }
         }
@@ -625,6 +629,19 @@ namespace WpfApp7.ViewModels
                     CenterX = centerXCoorAdj,
                     CenterY = centerYCoorAdj,
                 };
+            }
+        }
+
+        private void RefreshCalibPointConfigInfo()
+        {
+            if (gunMappingConfig != null)
+            {
+                MappingPoints mapPoints = gunMappingConfig.RemoteMapping.MappingPoints;
+
+                mapPoints.TopLeftX = topLeftXCoorAdj;
+                mapPoints.TopLeftY = topLeftYCoorAdj;
+                mapPoints.CenterX = centerXCoorAdj;
+                mapPoints.CenterY = centerYCoorAdj;
             }
         }
 
