@@ -20,8 +20,8 @@
     <Canvas x:Name="calibCanvas">
         <Ellipse x:Name="lightgunPointEllipse" Width="10" Height="10" Canvas.Top="{Binding LightGunPointY}" Canvas.Left="{Binding LightGunPointX}"
                  Visibility="{Binding LightGunPointVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Fill="Green" />
-        <Image x:Name="topLeftGunImg" Source="gun.png" Width="75" Height="75" Canvas.Top="{Binding GunImageTop}" Canvas.Left="{Binding GunImageLeft}" Visibility="{Binding DisplayTopLeftGunImg, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Image x:Name="centerGunImg" Source="gun.png" Width="75" Height="75" Canvas.Top="{Binding GunCenterTop}" Canvas.Left="{Binding GunCenterLeft}" Visibility="{Binding DisplayCenterGunImg, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Image x:Name="topLeftGunImg" Source="gun.png" Width="{Binding GunImgWidth, Mode=OneTime}" Height="{Binding GunImgHeight, Mode=OneTime}" Canvas.Top="{Binding GunImageTop}" Canvas.Left="{Binding GunImageLeft}" Visibility="{Binding DisplayTopLeftGunImg, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        <Image x:Name="centerGunImg" Source="gun.png" Width="{Binding GunImgWidth, Mode=OneTime}" Height="{Binding GunImgHeight, Mode=OneTime}" Canvas.Top="{Binding GunCenterTop}" Canvas.Left="{Binding GunCenterLeft}" Visibility="{Binding DisplayCenterGunImg, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBlock Text="{Binding MidPointString}" Canvas.Bottom="0" Canvas.Left="20" MinWidth="100" />
         <TextBox Text="{Binding CalibPointString, Mode=OneWay}" IsReadOnly="True" MinWidth="300" MinHeight="100" Canvas.Bottom="0" Canvas.Right="0" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <StackPanel Orientation="Vertical" Canvas.Top="0" Canvas.Left="0" Width="{Binding ActualWidth, ElementName=calibCanvas, Mode=OneWay}">

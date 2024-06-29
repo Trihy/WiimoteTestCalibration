@@ -225,6 +225,9 @@ namespace WpfApp7.ViewModels
         private const int GUN_IMG_HEIGHT = 72;
         private const int IRSENSORS_LEN = 4;
 
+        public int GunImgWidth => GUN_IMG_WIDTH;
+        public int GunImgHeight => GUN_IMG_HEIGHT;
+
         public MainWinViewModel()
         {
             mWC = new WiimoteCollection();
