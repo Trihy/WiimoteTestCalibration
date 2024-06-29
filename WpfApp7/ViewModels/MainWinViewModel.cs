@@ -663,8 +663,9 @@ namespace WpfApp7.ViewModels
         public void TearDown()
         {
             SaveMappingConfig();
+            StateDataChanged = null;
 
-            foreach(Wiimote wm in mWC)
+            foreach (Wiimote wm in mWC)
             {
                 wm.Disconnect();
             }
