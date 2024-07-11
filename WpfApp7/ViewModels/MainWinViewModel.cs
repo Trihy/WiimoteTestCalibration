@@ -652,14 +652,17 @@ namespace WpfApp7.ViewModels
         {
             StringBuilder builder = new StringBuilder();
             //builder.AppendLine($"OG TL {origTopLeftCalibPoint.X} | {origTopLeftCalibPoint.Y}");
-            builder.AppendLine($"{topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
-            builder.AppendLine($"{centerCalibPoint.X} {centerCalibPoint.Y}");
+            builder.AppendLine($"test_topLeftGunX: {topLeftCalibPoint.X},");
+            builder.AppendLine($"test_topLeftGunY: {topLeftCalibPoint.Y},");
+            builder.AppendLine($"test_centerGunX: {centerCalibPoint.X},");
+            builder.AppendLine($"test_centerGunY: {centerCalibPoint.Y},");
             CalibPointString = builder.ToString();
             //CalibPointStringChanged?.Invoke(this, EventArgs.Empty);
 
+            // Debug cmd output
             //Trace.WriteLine($"OG TL {origTopLeftCalibPoint.X} | {origTopLeftCalibPoint.Y}");
-            Trace.WriteLine($"{topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
-            Trace.WriteLine($"{centerCalibPoint.X} {centerCalibPoint.Y}");
+            Trace.WriteLine($"test_topLeftGun {topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
+            Trace.WriteLine($"test_centerGunX {centerCalibPoint.X} {centerCalibPoint.Y}");
             Trace.WriteLine("");
         }
 
