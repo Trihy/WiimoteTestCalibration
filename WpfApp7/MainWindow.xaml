@@ -26,8 +26,23 @@
         <TextBlock Text="{Binding MidPointString}" Canvas.Bottom="0" Canvas.Left="20" MinWidth="100" />
         <TextBox Text="{Binding CalibPointString, Mode=OneWay}" IsReadOnly="True" MinWidth="300" MinHeight="100" Canvas.Bottom="0" Canvas.Right="0" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <StackPanel Orientation="Vertical" Canvas.Top="0" Canvas.Left="0" Width="{Binding ActualWidth, ElementName=calibCanvas, Mode=OneWay}" Margin="0,8,0,0">
-            <TextBlock Text="{Binding CurrentStepHelpText, Mode=OneWay, FallbackValue='Fallback Text'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" />
-            <TextBlock Text="{Binding WarningHelpText, Mode=OneWay, FallbackValue='Error'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" Foreground="Red" />
+            <DockPanel>
+                <Menu DockPanel.Dock="Right" VerticalAlignment="Top" Margin="0,16,8,0">
+                    <MenuItem Header="&#8942;">
+                        <MenuItem x:Name="resetMenuItem" Header="Reset" Click="ResetMenuItem_Click">
+                        </MenuItem>
+
+                        <MenuItem x:Name="quitMenuItem" Header="Quit" Click="QuitMenuItem_Click">
+                        </MenuItem>
+                    </MenuItem>
+                </Menu>
+
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding CurrentStepHelpText, Mode=OneWay, FallbackValue='Fallback Text'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" />
+                    <TextBlock Text="{Binding WarningHelpText, Mode=OneWay, FallbackValue='Error'}" MinHeight="40" VerticalAlignment="Top" TextAlignment="Center" Foreground="Red" />
+                </StackPanel>
+            </DockPanel>
+
         </StackPanel>
 
         <UniformGrid Columns="2" Canvas.Top="300" Canvas.Left="0" MinWidth="200"
