@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -224,6 +225,9 @@ namespace WpfApp7.ViewModels
         private const int GUN_IMG_WIDTH = 72;
         private const int GUN_IMG_HEIGHT = 72;
         private const int IRSENSORS_LEN = 4;
+
+        public int GunImgWidth => GUN_IMG_WIDTH;
+        public int GunImgHeight => GUN_IMG_HEIGHT;
 
         public MainWinViewModel()
         {
@@ -649,22 +653,26 @@ namespace WpfApp7.ViewModels
         {
             StringBuilder builder = new StringBuilder();
             //builder.AppendLine($"OG TL {origTopLeftCalibPoint.X} | {origTopLeftCalibPoint.Y}");
-            builder.AppendLine($"{topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
-            builder.AppendLine($"{centerCalibPoint.X} {centerCalibPoint.Y}");
+            builder.AppendLine($"test_topLeftGunX: {string.Create(CultureInfo.InvariantCulture, $"{topLeftCalibPoint.X}")}");
+            builder.AppendLine($"test_topLeftGunY: {string.Create(CultureInfo.InvariantCulture, $"{topLeftCalibPoint.Y}")},");
+            builder.AppendLine($"test_centerGunX: {string.Create(CultureInfo.InvariantCulture, $"{centerCalibPoint.X}")},");
+            builder.AppendLine($"test_centerGunY: {string.Create(CultureInfo.InvariantCulture, $"{centerCalibPoint.Y}")},");
             CalibPointString = builder.ToString();
             //CalibPointStringChanged?.Invoke(this, EventArgs.Empty);
 
+            // Debug cmd output
             //Trace.WriteLine($"OG TL {origTopLeftCalibPoint.X} | {origTopLeftCalibPoint.Y}");
-            Trace.WriteLine($"{topLeftCalibPoint.X} {topLeftCalibPoint.Y}");
-            Trace.WriteLine($"{centerCalibPoint.X} {centerCalibPoint.Y}");
+            Trace.WriteLine($"test_topLeftGun {string.Create(CultureInfo.InvariantCulture, $"{topLeftCalibPoint.X}")} {string.Create(CultureInfo.InvariantCulture, $"{topLeftCalibPoint.Y}")}");
+            Trace.WriteLine($"test_centerGunX {string.Create(CultureInfo.InvariantCulture, $"{centerCalibPoint.X}")} {string.Create(CultureInfo.InvariantCulture, $"{centerCalibPoint.Y}")}");
             Trace.WriteLine("");
         }
 
         public void TearDown()
         {
             SaveMappingConfig();
+            StateDataChanged = null;
 
-            foreach(Wiimote wm in mWC)
+            foreach (Wiimote wm in mWC)
             {
                 wm.Disconnect();
             }

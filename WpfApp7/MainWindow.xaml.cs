@@ -104,5 +104,16 @@ namespace WpfApp7
                 Application.Current.Shutdown(0);
             }
         }
+
+        private void ResetMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            winWM.Reset();
+            winWM.StartCalibration();
+        }
+
+        private void QuitMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown(0);
+        }
     }
 }
